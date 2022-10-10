@@ -1,0 +1,18 @@
+.button {
+    color: white;
+    background-color: #5899E2;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 10px;
+    border: none
+}
+
+.button:hover {
+    color: black;
+    background-color: #65AFFF;
+}
+
+#clipboard:hover {
+    cursor: pointer;
+    background-color: #5899E2;
+}

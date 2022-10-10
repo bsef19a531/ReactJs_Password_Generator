@@ -1,0 +1,11 @@
+.input-group-text {
+    background-color: #a4d0ff;
+}
+
+.form-check-input:checked {
+    /* background-color: #d6ecff; */
+}
+
+.form-control:disabled {
+    background-color: white;
+}
