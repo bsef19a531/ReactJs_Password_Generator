@@ -8,7 +8,7 @@ import "./InputForm.css";
 
 const InputForm = () => {
 
-    //let errorMsg = "You Must Check Atleast 1 CheckBox";
+    let [copiedMsgState, setCopiedMsgState] = useState({ copied: false, copiedMsg: "" })
 
     let [errorState, setErrorState] = useState({ error: false, errorMsg: "" });
 
@@ -33,7 +33,7 @@ const InputForm = () => {
         event.preventDefault();
         if (document.getElementById('numberField').value === '') {
 
-
+            setCopiedMsgState({ ...copiedMsgState, copied: false });
             setErrorState({
                 error: true, errorMsg: "Set Password Length First"
             });
@@ -41,27 +41,41 @@ const InputForm = () => {
         else {
             const passwordString = generatePassword(event, state);
             if (passwordString === "") {
-
+                setCopiedMsgState({ ...copiedMsgState, copied: false });
                 setErrorState({
-                    error: true, errorMsg: "You Must Check Atleast 1 CheckBox"
+                    error: true, errorMsg: "Check Atleast 1 CheckBox"
                 }
                 );
 
             }
             else {
-                setErrorState(false);
+                setErrorState({ ...errorState, error: false });
                 setState({ ...state, generatedPassword: passwordString });
             }
         }
     }
 
+    const clearCopiedNotification = () => {
+        setCopiedMsgState({ ...setCopiedMsgState, copied: false });
+    }
+
     const copyToClipboard = () => {
         let copyText = document.getElementById('passwordText');
-        copyText.select();
-        copyText.setSelectionRange(0, 21); // For mobile devices
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
+        if (copyText.value !== "") {
+            copyText.select();
+            copyText.setSelectionRange(0, 21); // For mobile devices
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+            setErrorState({ ...errorState, error: false });
+            setCopiedMsgState({ copied: true, copiedMsg: "Password Copied ✔" });
+
+            setTimeout(clearCopiedNotification, 4000);
+        }
+
+
+
     }
+
 
     return (
         <>
@@ -70,8 +84,13 @@ const InputForm = () => {
                 <div className="input-group mb-4">
                     <span className="input-group-text">Password</span>
                     <input id="passwordText" type="text" className="form-control" placeholder="@ Generated Password" value={state.generatedPassword} onChange={updateState} name="generatedPassword" disabled={true} />
-                    <button type="button" id="clipboard" className="input-group-text">
-                        <i className="fa fa-clipboard" aria-hidden="true" onClick={copyToClipboard}></i>
+                    <button type="button" id="clipboard" className="input-group-text" onClick={copyToClipboard}>
+                        <i className="fa fa-clipboard" aria-hidden="true">
+                            {copiedMsgState.copied ? <span id="tick-badge" className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                <i className="fa-light fa-check"></i>
+                                <span className="visually-hidden">unread messages</span>
+                            </span> : false}
+                        </i>
                     </button>
                 </div>
 
@@ -120,7 +139,9 @@ const InputForm = () => {
 
                 {errorState.error ? <span className="badge bg-danger">{errorState.errorMsg}</span> : false}
 
-            </form>
+                {copiedMsgState.copied ? <span className="badge bg-success">{copiedMsgState.copiedMsg}</span> : false}
+
+            </form >
         </>
     )
 }
