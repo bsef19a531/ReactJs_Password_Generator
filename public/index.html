@@ -37,10 +37,36 @@
 
   <!--Font Awesome-->
   <script src="https://use.fontawesome.com/171f42a5d5.js"></script>
+
+  <!--Added ParticleJs plugin-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
+  <script>
+    window.onload = function () {
+      Particles.init({
+        selector: '.background',
+        color: ['#1759c2', '#4f93ff', '#80b1ff', '#025ff2', "#003c9c"],
+        connectParticles: true,
+        maxParticles: 100,
+        sizeVariations: 5,
+        minDistance: 120,
+        responsive: [
+          {
+            breakpoint: 768,
+            options: { maxParticles: 40 }
+          },
+          {
+            breakpoint: 425,
+            options: { maxParticles: 20, color: ['#1759c2', '#025ff2', "#003c9c"] }
+          }
+        ]
+      });
+    };
+  </script>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
+
   <div id="root"></div>
   <!--
       This HTML file is a template.
@@ -52,6 +78,7 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+  <canvas class="background"></canvas>
 </body>
 
 </html>

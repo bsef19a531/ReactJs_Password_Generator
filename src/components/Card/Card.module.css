@@ -10,3 +10,15 @@
     border: solid 2px #5899E2;
     box-shadow: #CDC5B4 4px 4px 6px;
 }
+
+@media(max-width: 425px) {
+    .card {
+        margin: 3vh auto
+    }
+}
+
+@media(max-width: 315px) {
+    .card {
+        margin: 4vh auto
+    }
+}

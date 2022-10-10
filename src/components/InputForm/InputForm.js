@@ -8,6 +8,10 @@ import "./InputForm.css";
 
 const InputForm = () => {
 
+    //let errorMsg = "You Must Check Atleast 1 CheckBox";
+
+    let [errorState, setErrorState] = useState({ error: false, errorMsg: "" });
+
     let [state, setState] = useState({
         generatedPassword: '', passwordLength: '', symbols: false, numbers: false, capital: false, small: false
     });
@@ -25,12 +29,29 @@ const InputForm = () => {
     }
 
     const wrapperPasswordGenerator = (event) => {
-        const passwordString = generatePassword(event, state);
-        if (passwordString == null) {
 
+        event.preventDefault();
+        if (document.getElementById('numberField').value === '') {
+
+
+            setErrorState({
+                error: true, errorMsg: "Set Password Length First"
+            });
         }
         else {
-            setState({ ...state, generatedPassword: passwordString });
+            const passwordString = generatePassword(event, state);
+            if (passwordString === "") {
+
+                setErrorState({
+                    error: true, errorMsg: "You Must Check Atleast 1 CheckBox"
+                }
+                );
+
+            }
+            else {
+                setErrorState(false);
+                setState({ ...state, generatedPassword: passwordString });
+            }
         }
     }
 
@@ -40,7 +61,6 @@ const InputForm = () => {
         copyText.setSelectionRange(0, 21); // For mobile devices
         // Copy the text inside the text field
         navigator.clipboard.writeText(copyText.value);
-
     }
 
     return (
@@ -49,14 +69,14 @@ const InputForm = () => {
 
                 <div className="input-group mb-4">
                     <span className="input-group-text">Password</span>
-                    <input id="passwordText" type="text" className="form-control" placeholder="@ Generated Password" value={state.generatedPassword} onChange={updateState} name="generatedPassword" />
+                    <input id="passwordText" type="text" className="form-control" placeholder="@ Generated Password" value={state.generatedPassword} onChange={updateState} name="generatedPassword" disabled={true} />
                     <button type="button" id="clipboard" className="input-group-text">
                         <i className="fa fa-clipboard" aria-hidden="true" onClick={copyToClipboard}></i>
                     </button>
                 </div>
 
                 <div className="input-group mb-2">
-                    <input type="number" className="form-control" placeholder="Enter Password Length" min="4" max="20" value={state.passwordLength} onChange={updateState} name="passwordLength" required={true} />
+                    <input id="numberField" type="number" className="form-control" placeholder="Enter Password Length" min="4" max="20" value={state.passwordLength} onChange={updateState} name="passwordLength" />
                     <span className="input-group-text" >Length</span>
                 </div>
 
@@ -97,6 +117,8 @@ const InputForm = () => {
             <FormGroup label="Include Small Alphabets" /> */}
 
                 <FormButton label="Generate" />
+
+                {errorState.error ? <span className="badge bg-danger">{errorState.errorMsg}</span> : false}
 
             </form>
         </>

@@ -2,10 +2,22 @@
     background-color: #a4d0ff;
 }
 
-.form-check-input:checked {
-    /* background-color: #d6ecff; */
-}
-
 .form-control:disabled {
     background-color: white;
+}
+
+@media(max-width: 425px) {
+
+    .form-control,
+    .input-group-text {
+        font-size: 0.7em;
+    }
+}
+
+@media(max-width: 315px) {
+
+    .form-control,
+    .input-group-text {
+        font-size: 0.6em;
+    }
 }
